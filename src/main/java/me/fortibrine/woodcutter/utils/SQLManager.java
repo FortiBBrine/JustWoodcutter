@@ -8,7 +8,7 @@ public class SQLManager {
 
     public SQLManager() {
         try {
-            String url = "jdbc:sqlite:plugins/JustTntRun/statistic.db";
+            String url = "jdbc:sqlite:plugins/Woodcutter/statistic.db";
 
             connection = DriverManager.getConnection(url);
 

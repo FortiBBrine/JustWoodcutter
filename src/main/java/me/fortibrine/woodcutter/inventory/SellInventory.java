@@ -22,7 +22,6 @@ public class SellInventory implements InventoryHolder {
 
     private Inventory inventory;
     private Map<Material, Double> costOfBlocks;
-    private SQLManager sqlManager;
     private MessageManager messageManager;
     private EconomyManager economyManager;
 
@@ -31,7 +30,6 @@ public class SellInventory implements InventoryHolder {
         FileConfiguration config = plugin.getConfig();
 
         this.costOfBlocks = variableManager.getCostOfBlocks();
-        this.sqlManager = plugin.getSqlManager();
         this.messageManager = plugin.getMessageManager();
         this.economyManager = plugin.getEconomyManager();
 

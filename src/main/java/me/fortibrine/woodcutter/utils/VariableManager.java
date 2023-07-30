@@ -41,8 +41,10 @@ public class VariableManager {
 
             meta.setDisplayName(configurationSection.getString("item.name").replace("%booster", String.valueOf(booster)).replace("%level", String.valueOf(level)));
 
+            final int finalLevel = level;
+
             List<String> lore = configurationSection.getStringList("item.lore");
-            lore.replaceAll(s -> s.replace("%booster", String.valueOf(booster)).replace("%level", String.valueOf(level));
+            lore.replaceAll(s -> s.replace("%booster", String.valueOf(booster)).replace("%level", String.valueOf(finalLevel)));
             meta.setLore(lore);
 
             item.setItemMeta(meta);

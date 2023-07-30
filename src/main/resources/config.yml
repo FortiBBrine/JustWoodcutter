@@ -17,3 +17,10 @@ sell-inventory:
     name: "&7Продать вещи"
     lore: []
     material: OAK_LOG
+
+level-inventory:
+  title: "Улучшить предмет"
+  item:
+    name: "&7Улучшить"
+    lore: []
+    material: WOODEN_AXE
