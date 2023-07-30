@@ -27,7 +27,7 @@ public class CommandSell implements CommandExecutor {
             return true;
         }
 
-        SellInventory sellInventory = new SellInventory(plugin);
+        SellInventory sellInventory = new SellInventory(plugin, player);
         player.openInventory(sellInventory.getInventory());
 
         return true;

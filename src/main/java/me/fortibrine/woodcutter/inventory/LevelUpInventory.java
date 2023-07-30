@@ -24,6 +24,7 @@ public class LevelUpInventory implements InventoryHolder {
     private EconomyManager economyManager;
     private List<WoodcutterAxe> woodcutterAxeList;
     private ItemStack currentItem;
+    private Woodcutter plugin;
 
     private Inventory inventory;
     public LevelUpInventory(Woodcutter plugin, Player player) {
@@ -37,6 +38,7 @@ public class LevelUpInventory implements InventoryHolder {
         this.sqlManager = plugin.getSqlManager();
         this.messageManager = plugin.getMessageManager();
         this.economyManager = plugin.getEconomyManager();
+        this.plugin = plugin;
 
         WoodcutterAxe axe = this.woodcutterAxeList.get(level + 1);
 
@@ -46,29 +48,58 @@ public class LevelUpInventory implements InventoryHolder {
                 messageManager.supportMessagesJSON(messageManager.supportColorsHEX(config.getString("level-inventory.title"))).replace("&", "§")
         );
 
-        ItemStack item = new ItemStack(Material.matchMaterial(config.getString("level-inventory.item.material")));
+        ItemStack item;
+        if (level >= this.woodcutterAxeList.size()) {
+            item = new ItemStack(Material.matchMaterial(config.getString("level-inventory.barrier.material")));
 
-        ItemMeta meta = item.getItemMeta();
+            ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(
-                messageManager.supportMessagesJSON(messageManager.supportColorsHEX(config.getString("level-inventory.item.name")))
-                        .replace("&", "§")
-                        .replace("%cost", String.valueOf(axe.getCost()))
-                        .replace("%booster", String.valueOf(axe.getBooster()))
-                        .replace("%level", String.valueOf(axe.getLevel()))
-        );
+            meta.setDisplayName(
+                    messageManager.supportMessagesJSON(messageManager.supportColorsHEX(config.getString("level-inventory.barrier.name")))
+                            .replace("&", "§")
+                            .replace("%cost", String.valueOf(axe.getCost()))
+                            .replace("%booster", String.valueOf(axe.getBooster()))
+                            .replace("%level", String.valueOf(axe.getLevel()))
+            );
 
-        List<String> lore = config.getStringList("level-inventory.item.lore");
-        lore.replaceAll(
-                s -> messageManager.supportMessagesJSON(messageManager.supportColorsHEX(s))
-                        .replace("&", "§")
-                        .replace("%cost", String.valueOf(axe.getCost()))
-                        .replace("%booster", String.valueOf(axe.getBooster()))
-                        .replace("%level", String.valueOf(axe.getLevel()))
-        );
-        meta.setLore(lore);
+            List<String> lore = config.getStringList("level-inventory.barrier.lore");
+            lore.replaceAll(
+                    s -> messageManager.supportMessagesJSON(messageManager.supportColorsHEX(s))
+                            .replace("&", "§")
+                            .replace("%cost", String.valueOf(axe.getCost()))
+                            .replace("%booster", String.valueOf(axe.getBooster()))
+                            .replace("%level", String.valueOf(axe.getLevel()))
+            );
+            meta.setLore(lore);
 
-        item.setItemMeta(meta);
+            item.setItemMeta(meta);
+
+        } else {
+
+            item = new ItemStack(Material.matchMaterial(config.getString("level-inventory.item.material")));
+
+            ItemMeta meta = item.getItemMeta();
+
+            meta.setDisplayName(
+                    messageManager.supportMessagesJSON(messageManager.supportColorsHEX(config.getString("level-inventory.item.name")))
+                            .replace("&", "§")
+                            .replace("%cost", String.valueOf(axe.getCost()))
+                            .replace("%booster", String.valueOf(axe.getBooster()))
+                            .replace("%level", String.valueOf(axe.getLevel()))
+            );
+
+            List<String> lore = config.getStringList("level-inventory.item.lore");
+            lore.replaceAll(
+                    s -> messageManager.supportMessagesJSON(messageManager.supportColorsHEX(s))
+                            .replace("&", "§")
+                            .replace("%cost", String.valueOf(axe.getCost()))
+                            .replace("%booster", String.valueOf(axe.getBooster()))
+                            .replace("%level", String.valueOf(axe.getLevel()))
+            );
+            meta.setLore(lore);
+
+            item.setItemMeta(meta);
+        }
 
         inventory.setItem(12, woodcutterAxeList.get(level).getItem());
         inventory.setItem(14, item);
@@ -106,6 +137,11 @@ public class LevelUpInventory implements InventoryHolder {
 
                 playerInventory.remove(this.currentItem);
                 playerInventory.addItem(axe.getItem());
+
+                player.closeInventory();
+
+                LevelUpInventory levelUpInventory = new LevelUpInventory(plugin, player);
+                player.openInventory(levelUpInventory.getInventory());
 
                 break;
         }

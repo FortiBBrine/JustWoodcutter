@@ -24,3 +24,7 @@ level-inventory:
     name: "&7Улучшить"
     lore: []
     material: WOODEN_AXE
+  barrier:
+    name: "&7Улучшить"
+    lore: []
+    material: BARRIER

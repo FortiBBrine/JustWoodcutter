@@ -1,13 +1,11 @@
 package me.fortibrine.woodcutter;
 
 import lombok.Getter;
+import me.fortibrine.woodcutter.commands.CommandBoosterSet;
 import me.fortibrine.woodcutter.commands.CommandLevelUp;
 import me.fortibrine.woodcutter.commands.CommandSell;
 import me.fortibrine.woodcutter.listeners.Listener;
-import me.fortibrine.woodcutter.utils.EconomyManager;
-import me.fortibrine.woodcutter.utils.MessageManager;
-import me.fortibrine.woodcutter.utils.SQLManager;
-import me.fortibrine.woodcutter.utils.VariableManager;
+import me.fortibrine.woodcutter.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,6 +26,9 @@ public final class Woodcutter extends JavaPlugin {
 
     @Getter
     private EconomyManager economyManager;
+
+    @Getter
+    private BoosterManager boosterManager;
 
     @Override
     public void onEnable() {
@@ -51,9 +52,11 @@ public final class Woodcutter extends JavaPlugin {
         variableManager = new VariableManager(this);
         messageManager = new MessageManager(this);
         economyManager = new EconomyManager();
+        boosterManager = new BoosterManager();
 
         this.getCommand("level").setExecutor(new CommandLevelUp(this));
         this.getCommand("sell").setExecutor(new CommandSell(this));
+        this.getCommand("booster").setExecutor(new CommandBoosterSet(this));
 
         pluginManager.registerEvents(new Listener(this), this);
 

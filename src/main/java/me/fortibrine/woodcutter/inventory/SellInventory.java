@@ -1,10 +1,7 @@
 package me.fortibrine.woodcutter.inventory;
 
 import me.fortibrine.woodcutter.Woodcutter;
-import me.fortibrine.woodcutter.utils.EconomyManager;
-import me.fortibrine.woodcutter.utils.MessageManager;
-import me.fortibrine.woodcutter.utils.SQLManager;
-import me.fortibrine.woodcutter.utils.VariableManager;
+import me.fortibrine.woodcutter.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,14 +21,18 @@ public class SellInventory implements InventoryHolder {
     private Map<Material, Double> costOfBlocks;
     private MessageManager messageManager;
     private EconomyManager economyManager;
+    private WoodcutterAxe axe;
+    private BoosterManager boosterManager;
 
-    public SellInventory(Woodcutter plugin) {
+    public SellInventory(Woodcutter plugin, Player player) {
         VariableManager variableManager = plugin.getVariableManager();
         FileConfiguration config = plugin.getConfig();
 
+        this.axe = plugin.getVariableManager().getWoodcutterAxeList().get(plugin.getSqlManager().getAxeLevel(player.getUniqueId().toString()));
         this.costOfBlocks = variableManager.getCostOfBlocks();
         this.messageManager = plugin.getMessageManager();
         this.economyManager = plugin.getEconomyManager();
+        this.boosterManager = plugin.getBoosterManager();
 
         inventory = Bukkit.createInventory(
                 this,
@@ -78,7 +79,13 @@ public class SellInventory implements InventoryHolder {
             playerInventory.remove(item);
         }
 
+        amount *= axe.getBooster();
+        amount *= this.boosterManager.getLocalBooster(player.getUniqueId());
+
         economyManager.giveMoney(player, amount);
 
+        String message = messageManager.parseString("sell").replace("%cost", String.valueOf(amount));
+
+        player.sendMessage(message);
     }
 }
