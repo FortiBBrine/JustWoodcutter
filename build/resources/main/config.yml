@@ -1,0 +1,30 @@
+axes:
+  1:
+    item:
+      name: "Топор (%level)"
+      material: WOODEN_AXE
+      lore: []
+      dig_speed: 1
+    booster: 1.0
+    cost: 0
+
+blocks:
+  OAK_LOG: 50
+
+sell-inventory:
+  title: "Продать"
+  item:
+    name: "&7Продать вещи"
+    lore: []
+    material: OAK_LOG
+
+level-inventory:
+  title: "Улучшить предмет"
+  item:
+    name: "&7Улучшить"
+    lore: []
+    material: WOODEN_AXE
+  barrier:
+    name: "&7Улучшить"
+    lore: []
+    material: BARRIER

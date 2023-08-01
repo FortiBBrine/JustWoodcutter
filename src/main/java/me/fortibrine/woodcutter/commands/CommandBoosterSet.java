@@ -29,9 +29,8 @@ public class CommandBoosterSet implements CommandExecutor {
             return true;
         }
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[9]);
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
         UUID uuid = offlinePlayer.getUniqueId();
-
 
         double booster;
         try {

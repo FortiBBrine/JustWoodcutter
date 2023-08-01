@@ -77,9 +77,12 @@ public class SellInventory implements InventoryHolder {
 
             Material material = item.getType();
 
-            amount += item.getAmount() * costOfBlocks.getOrDefault(material, 0.0);
+            if (costOfBlocks.containsKey(material)) {
+                amount += item.getAmount() * costOfBlocks.getOrDefault(material, 0.0);
 
-            playerInventory.remove(item);
+                playerInventory.remove(item);
+            }
+
         }
 
         amount *= axe.getBooster();
@@ -87,7 +90,9 @@ public class SellInventory implements InventoryHolder {
 
         economyManager.giveMoney(player, amount);
 
-        String message = messageManager.parseString("sell").replace("%cost", String.valueOf(amount));
+        String amountString = String.format("%.2f", amount);
+
+        String message = messageManager.parseString("sell").replace("%cost", amountString);
 
         player.sendMessage(message);
     }

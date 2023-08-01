@@ -11,6 +11,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public final class Woodcutter extends JavaPlugin {
@@ -32,6 +33,7 @@ public final class Woodcutter extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         PluginManager pluginManager = Bukkit.getPluginManager();
 
         if (!pluginManager.isPluginEnabled("Vault")) {
@@ -60,6 +62,7 @@ public final class Woodcutter extends JavaPlugin {
 
         pluginManager.registerEvents(new Listener(this), this);
 
+        boosterManager.getLocalBooster(UUID.randomUUID());
     }
 
     @Override
