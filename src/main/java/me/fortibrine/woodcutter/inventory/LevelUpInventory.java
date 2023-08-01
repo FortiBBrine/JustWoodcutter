@@ -30,17 +30,15 @@ public class LevelUpInventory implements InventoryHolder {
     public LevelUpInventory(Woodcutter plugin, Player player) {
         FileConfiguration config = plugin.getConfig();
 
-
-        int level = sqlManager.getAxeLevel(player.getUniqueId().toString());
-
         this.woodcutterAxeList = plugin.getVariableManager().getWoodcutterAxeList();
-        this.currentItem = woodcutterAxeList.get(level).getItem();
         this.sqlManager = plugin.getSqlManager();
         this.messageManager = plugin.getMessageManager();
         this.economyManager = plugin.getEconomyManager();
         this.plugin = plugin;
 
-        WoodcutterAxe axe = this.woodcutterAxeList.get(level + 1);
+        int level = sqlManager.getAxeLevel(player.getUniqueId().toString());
+        this.currentItem = woodcutterAxeList.get(level).getItem();
+
 
         inventory = Bukkit.createInventory(
                 this,
@@ -49,7 +47,7 @@ public class LevelUpInventory implements InventoryHolder {
         );
 
         ItemStack item;
-        if (level >= this.woodcutterAxeList.size()) {
+        if (level >= this.woodcutterAxeList.size() - 1) {
             item = new ItemStack(Material.matchMaterial(config.getString("level-inventory.barrier.material")));
 
             ItemMeta meta = item.getItemMeta();
@@ -57,18 +55,12 @@ public class LevelUpInventory implements InventoryHolder {
             meta.setDisplayName(
                     messageManager.supportMessagesJSON(messageManager.supportColorsHEX(config.getString("level-inventory.barrier.name")))
                             .replace("&", "§")
-                            .replace("%cost", String.valueOf(axe.getCost()))
-                            .replace("%booster", String.valueOf(axe.getBooster()))
-                            .replace("%level", String.valueOf(axe.getLevel()))
             );
 
             List<String> lore = config.getStringList("level-inventory.barrier.lore");
             lore.replaceAll(
                     s -> messageManager.supportMessagesJSON(messageManager.supportColorsHEX(s))
                             .replace("&", "§")
-                            .replace("%cost", String.valueOf(axe.getCost()))
-                            .replace("%booster", String.valueOf(axe.getBooster()))
-                            .replace("%level", String.valueOf(axe.getLevel()))
             );
             meta.setLore(lore);
 
@@ -77,6 +69,8 @@ public class LevelUpInventory implements InventoryHolder {
         } else {
 
             item = new ItemStack(Material.matchMaterial(config.getString("level-inventory.item.material")));
+
+            WoodcutterAxe axe = this.woodcutterAxeList.get(level + 1);
 
             ItemMeta meta = item.getItemMeta();
 
@@ -111,6 +105,8 @@ public class LevelUpInventory implements InventoryHolder {
     }
 
     public void onInventoryClick(InventoryClickEvent event) {
+        event.setCancelled(true);
+
         Player player = (Player) event.getWhoClicked();
 
         Inventory playerInventory = player.getInventory();
@@ -122,7 +118,7 @@ public class LevelUpInventory implements InventoryHolder {
             case 14:
                 int level = sqlManager.getAxeLevel(player.getUniqueId().toString());
 
-                if (level >= this.woodcutterAxeList.size()) return;
+                if (level >= this.woodcutterAxeList.size() - 1) return;
 
                 WoodcutterAxe axe = this.woodcutterAxeList.get(level + 1);
 

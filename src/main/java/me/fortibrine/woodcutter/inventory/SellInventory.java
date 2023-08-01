@@ -72,6 +72,9 @@ public class SellInventory implements InventoryHolder {
         double amount = 0;
 
         for (ItemStack item : playerInventory.getContents()) {
+
+            if (item == null) continue;
+
             Material material = item.getType();
 
             amount += item.getAmount() * costOfBlocks.getOrDefault(material, 0.0);

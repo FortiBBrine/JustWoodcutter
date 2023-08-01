@@ -30,7 +30,7 @@ public class VariableManager {
 
         int level = 0;
         for (String key : config.getConfigurationSection("axes").getKeys(false)) {
-            ConfigurationSection configurationSection = config.getConfigurationSection("aexs." + key);
+            ConfigurationSection configurationSection = config.getConfigurationSection("axes." + key);
 
             ItemStack item = new ItemStack(Material.matchMaterial(configurationSection.getString("item.material")));
 
