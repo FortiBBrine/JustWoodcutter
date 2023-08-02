@@ -29,6 +29,35 @@ public class CommandBoosterSet implements CommandExecutor {
             return true;
         }
 
+        if (args[0].equals("global")) {
+            double booster;
+            try {
+                booster = Double.parseDouble(args[1]);
+            } catch (NumberFormatException ex) {
+                sender.sendMessage(plugin.getMessageManager().parseString("booster-parse-error"));
+
+                return true;
+            }
+
+            long seconds;
+            try {
+                seconds = Long.parseLong(args[2]);
+            } catch (NumberFormatException ex) {
+                sender.sendMessage(plugin.getMessageManager().parseString("long-parse-error"));
+
+                return true;
+            }
+
+            if (!plugin.getBoosterManager().setGlobalBooster(booster, seconds)) {
+                sender.sendMessage(plugin.getMessageManager().parseString("already-activate"));
+                return true;
+            }
+
+            sender.sendMessage(plugin.getMessageManager().parseString("booster-set"));
+
+            return true;
+        }
+
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
         UUID uuid = offlinePlayer.getUniqueId();
 
@@ -50,7 +79,10 @@ public class CommandBoosterSet implements CommandExecutor {
             return true;
         }
 
-        plugin.getBoosterManager().setLocalBooster(uuid, booster, seconds);
+        if (!plugin.getBoosterManager().setLocalBooster(uuid, booster, seconds)) {
+            sender.sendMessage(plugin.getMessageManager().parseString("already-activate"));
+            return true;
+        }
 
         sender.sendMessage(plugin.getMessageManager().parseString("booster-set"));
 

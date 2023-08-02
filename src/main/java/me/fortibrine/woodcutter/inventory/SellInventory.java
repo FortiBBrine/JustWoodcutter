@@ -86,7 +86,7 @@ public class SellInventory implements InventoryHolder {
         }
 
         amount *= axe.getBooster();
-        amount *= this.boosterManager.getLocalBooster(player.getUniqueId());
+        amount *= (1 + this.boosterManager.getLocalBooster(player.getUniqueId()) + this.boosterManager.getGlobalBooster());
 
         economyManager.giveMoney(player, amount);
 
