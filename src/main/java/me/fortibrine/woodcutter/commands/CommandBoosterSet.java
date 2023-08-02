@@ -24,7 +24,7 @@ public class CommandBoosterSet implements CommandExecutor {
             return false;
         }
 
-        if (!sender.hasPermission("woodcutter.sell")) {
+        if (!sender.hasPermission("woodcutter.booster")) {
             sender.sendMessage(plugin.getMessageManager().parseString("not-permission"));
             return true;
         }

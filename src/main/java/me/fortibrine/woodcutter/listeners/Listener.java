@@ -1,6 +1,7 @@
 package me.fortibrine.woodcutter.listeners;
 
 import me.fortibrine.woodcutter.Woodcutter;
+import me.fortibrine.woodcutter.inventory.BoostersInventory;
 import me.fortibrine.woodcutter.inventory.LevelUpInventory;
 import me.fortibrine.woodcutter.inventory.SellInventory;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,9 @@ public class Listener implements org.bukkit.event.Listener {
         }
         if (inventory.getHolder() instanceof LevelUpInventory) {
             ((LevelUpInventory) inventory.getHolder()).onInventoryClick(event);
+        }
+        if (inventory.getHolder() instanceof BoostersInventory) {
+            ((BoostersInventory) inventory.getHolder()).onInventoryClick(event);
         }
 
     }

@@ -22,7 +22,7 @@ public class CommandLevelUp implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        if (!player.hasPermission("woodcutter.sell")) {
+        if (!player.hasPermission("woodcutter.level")) {
             plugin.getMessageManager().sendMessage(player, "not-permission");
             return true;
         }

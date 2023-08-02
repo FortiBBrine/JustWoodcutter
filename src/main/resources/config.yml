@@ -18,6 +18,18 @@ sell-inventory:
     lore: []
     material: OAK_LOG
 
+boosters-inventory:
+  title: "Бустеры"
+  global:
+    name: "Глобальный бустер на 1 час"
+    lore: []
+    material: PAPER
+  local:
+    name: "Локальный бустер на 1 час"
+    lore: [ ]
+    material: PAPER
+
+
 level-inventory:
   title: "Улучшить предмет"
   item:

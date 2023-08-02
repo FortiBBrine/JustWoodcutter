@@ -11,6 +11,9 @@ commands:
   booster:
     description: "Установить бустер"
     usage: "/booster [Никнейм] [Бустер] [Время в секундах]"
+  boosters:
+    description: "Список бустеров"
+    usage: "/boosters [add] [Никнейм] [Бустер] [Время в секундах] [Глобальный? (true/false)]"
 
 permissions:
   woodcutter.*:
@@ -19,6 +22,9 @@ permissions:
     children:
       woodcutter.level: true
       woodcutter.sell: true
+      woodcutter.booster: true
+      woodcutter.boosters: true
+      woodcutter.boosters.add: true
   woodcutter.level:
     default: true
     description: "Команда для повышения уровня топора"
@@ -28,3 +34,9 @@ permissions:
   woodcutter.booster:
     default: op
     description: "Установить бустер игроку"
+  woodcutter.boosters:
+    default: true
+    description: "Посмотреть список бустеров"
+  woodcutter.boosters.add:
+    default: op
+    description: "Добавить бустер"

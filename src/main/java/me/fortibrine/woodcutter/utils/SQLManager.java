@@ -1,6 +1,8 @@
 package me.fortibrine.woodcutter.utils;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLManager {
 
@@ -19,8 +21,58 @@ public class SQLManager {
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
+
+            preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS boosters (" +
+                    "uuid TEXT," +
+                    "booster DOUBLE," +
+                    "time BIGINT," +
+                    "global BOOLEAN)");
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
+        }
+    }
+
+    public List<Booster> getBoosters(String uuid) {
+        List<Booster> listBoosters = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT time, booster, global FROM boosters WHERE uuid = ?");
+            preparedStatement.setString(1, uuid);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Booster booster = new Booster(resultSet.getLong(1), resultSet.getInt(2), resultSet.getBoolean(3));
+                listBoosters.add(booster);
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException exception) {
+            return new ArrayList<>();
+        }
+
+        return listBoosters;
+    }
+
+    public void addBooster(String uuid, long time, double booster, boolean global) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO boosters(uuid, booster, time, global)" +
+                    "VALUES(?, ?, ?, ?);");
+
+            preparedStatement.setString(1, uuid);
+            preparedStatement.setDouble(2, booster);
+            preparedStatement.setLong(3, time);
+            preparedStatement.setBoolean(4, global);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+        } catch (SQLException ignored) {
         }
     }
 

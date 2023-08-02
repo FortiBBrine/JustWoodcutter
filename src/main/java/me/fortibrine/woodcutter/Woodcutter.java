@@ -2,6 +2,7 @@ package me.fortibrine.woodcutter;
 
 import lombok.Getter;
 import me.fortibrine.woodcutter.commands.CommandBoosterSet;
+import me.fortibrine.woodcutter.commands.CommandBoosters;
 import me.fortibrine.woodcutter.commands.CommandLevelUp;
 import me.fortibrine.woodcutter.commands.CommandSell;
 import me.fortibrine.woodcutter.listeners.Listener;
@@ -59,10 +60,11 @@ public final class Woodcutter extends JavaPlugin {
         this.getCommand("level").setExecutor(new CommandLevelUp(this));
         this.getCommand("sell").setExecutor(new CommandSell(this));
         this.getCommand("booster").setExecutor(new CommandBoosterSet(this));
+        this.getCommand("boosters").setExecutor(new CommandBoosters(this));
 
         pluginManager.registerEvents(new Listener(this), this);
 
-        boosterManager.getLocalBooster(UUID.randomUUID());
+//        this.sqlManager.addBooster(Bukkit.getOfflinePlayer("IJustFortiLive").getUniqueId().toString(), 1600, 1.1, true);
     }
 
     @Override
