@@ -1,10 +1,12 @@
 package me.fortibrine.woodcutter.utils;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLManager {
+public class SQLManager implements Closeable {
 
     private Connection connection;
 
@@ -132,4 +134,13 @@ public class SQLManager {
         }
     }
 
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException ignored) {
+
+        }
+    }
 }

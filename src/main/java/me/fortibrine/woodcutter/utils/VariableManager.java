@@ -3,6 +3,7 @@ package me.fortibrine.woodcutter.utils;
 import lombok.Getter;
 import me.fortibrine.woodcutter.Woodcutter;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +21,12 @@ public class VariableManager {
 
     @Getter
     private Map<Material, Double> costOfBlocks = new HashMap<>();
+
+    @Getter
+    private Map<Material, Material> blocks = new HashMap<>();
+
+    @Getter
+    private Map<Block, Material> regenerateBlocks = new HashMap<>();
 
     private Woodcutter plugin;
 
@@ -63,6 +70,12 @@ public class VariableManager {
 
         }
 
+        for (String key : config.getConfigurationSection("settings.blocks").getKeys(false)) {
+            Material material = Material.matchMaterial(config.getString(key));
+            Material giveMaterial = Material.matchMaterial(config.getString("settings.blocks." + key));
+
+            this.blocks.put(material, giveMaterial);
+        }
     }
 
 }

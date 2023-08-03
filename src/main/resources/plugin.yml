@@ -3,6 +3,10 @@ version: '${version}'
 main: me.fortibrine.woodcutter.Woodcutter
 api-version: 1.13
 
+
+depend: [Vault]
+softdepend: [PlaceholderAPI]
+
 commands:
   level:
     description: "Команда для повышения уровня топора"

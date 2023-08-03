@@ -11,6 +11,13 @@ axes:
 blocks:
   OAK_LOG: 50
 
+settings:
+  handle-block-break: true
+  regenerate-time: 15
+
+  blocks:
+    OAK_LOG: OAK_LOG
+
 sell-inventory:
   title: "Продать"
   item:

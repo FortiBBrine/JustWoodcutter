@@ -5,14 +5,15 @@ import me.fortibrine.woodcutter.commands.CommandBoosterSet;
 import me.fortibrine.woodcutter.commands.CommandBoosters;
 import me.fortibrine.woodcutter.commands.CommandLevelUp;
 import me.fortibrine.woodcutter.commands.CommandSell;
-import me.fortibrine.woodcutter.listeners.Listener;
+import me.fortibrine.woodcutter.listeners.BlockBreakListener;
+import me.fortibrine.woodcutter.listeners.InventoryListener;
 import me.fortibrine.woodcutter.utils.*;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.UUID;
 import java.util.logging.Level;
 
 public final class Woodcutter extends JavaPlugin {
@@ -62,13 +63,18 @@ public final class Woodcutter extends JavaPlugin {
         this.getCommand("booster").setExecutor(new CommandBoosterSet(this));
         this.getCommand("boosters").setExecutor(new CommandBoosters(this));
 
-        pluginManager.registerEvents(new Listener(this), this);
+        pluginManager.registerEvents(new InventoryListener(this), this);
+        pluginManager.registerEvents(new BlockBreakListener(this), this);
 
 //        this.sqlManager.addBooster(Bukkit.getOfflinePlayer("IJustFortiLive").getUniqueId().toString(), 1600, 1.1, true);
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        this.sqlManager.close();
+
+        for (Block block : this.variableManager.getRegenerateBlocks().keySet()) {
+            block.setType(variableManager.getRegenerateBlocks().get(block));
+        }
     }
 }
