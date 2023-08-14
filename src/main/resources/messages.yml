@@ -6,3 +6,5 @@ booster-parse-error: "Бустер нужно указывать через чи
 long-parse-error: "Неправильное число."
 already-activate: "Бустер уже активирован."
 booster-added: "Бустер добавлен."
+booster-already-started: "Бустер уже запущен."
+booster-start: "Вы запустили бустер."

@@ -2,11 +2,13 @@ package me.fortibrine.woodcutter.inventory;
 
 import me.fortibrine.woodcutter.Woodcutter;
 import me.fortibrine.woodcutter.utils.Booster;
+import me.fortibrine.woodcutter.utils.BoosterManager;
 import me.fortibrine.woodcutter.utils.MessageManager;
 import me.fortibrine.woodcutter.utils.SQLManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -23,6 +25,7 @@ public class BoostersInventory implements InventoryHolder {
     private Inventory inventory;
     private SQLManager sqlManager;
     private MessageManager messageManager;
+    private BoosterManager boosterManager;
     private Map<ItemStack, Booster> items = new HashMap<>();
 
     public BoostersInventory(Woodcutter plugin, UUID uuid) {
@@ -30,6 +33,7 @@ public class BoostersInventory implements InventoryHolder {
 
         this.sqlManager = plugin.getSqlManager();
         this.messageManager = plugin.getMessageManager();
+        this.boosterManager = plugin.getBoosterManager();
 
         inventory = Bukkit.createInventory(this, 54, messageManager.supportMessagesJSON(messageManager.supportColorsHEX(config.getString("boosters-inventory.title")))
                         .replace("&", "§"));
@@ -93,5 +97,34 @@ public class BoostersInventory implements InventoryHolder {
 
     public void onInventoryClick(InventoryClickEvent event) {
         event.setCancelled(true);
+
+        Player player = (Player) event.getWhoClicked();
+        ItemStack item = event.getCurrentItem();
+
+        if (item == null) return;
+
+        Booster booster = null;
+        for (Map.Entry<ItemStack, Booster> entry : this.items.entrySet()) {
+            if (entry.getKey().isSimilar(item)) {
+                booster = entry.getValue();
+            }
+        }
+
+        if (booster == null) return;
+
+        if (booster.isGlobal()) {
+            if (boosterManager.setGlobalBooster(booster.getBooster(), booster.getTime())) {
+                messageManager.sendMessage(player, "booster-already-started");
+            } else {
+                messageManager.sendMessage(player, "booster-start");
+            }
+        } else {
+            if (boosterManager.setLocalBooster(player.getUniqueId(), booster.getBooster(), booster.getTime())) {
+                messageManager.sendMessage(player, "booster-already-started");
+            } else {
+                messageManager.sendMessage(player, "booster-start");
+            }
+        }
+
     }
 }

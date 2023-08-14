@@ -14,26 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 public class VariableManager {
 
-    @Getter
     private List<WoodcutterAxe> woodcutterAxeList = new ArrayList<>();
-
-    @Getter
     private Map<Material, Double> costOfBlocks = new HashMap<>();
-
-    @Getter
     private Map<Material, Material> blocks = new HashMap<>();
-
-    @Getter
     private Map<Block, Material> regenerateBlocks = new HashMap<>();
 
-    private Woodcutter plugin;
-
     public VariableManager(Woodcutter plugin) {
-        this.plugin = plugin;
 
-        FileConfiguration config = this.plugin.getConfig();
+        FileConfiguration config = plugin.getConfig();
 
         int level = 0;
         for (String key : config.getConfigurationSection("axes").getKeys(false)) {
@@ -71,7 +62,7 @@ public class VariableManager {
         }
 
         for (String key : config.getConfigurationSection("settings.blocks").getKeys(false)) {
-            Material material = Material.matchMaterial(config.getString(key));
+            Material material = Material.matchMaterial(key);
             Material giveMaterial = Material.matchMaterial(config.getString("settings.blocks." + key));
 
             this.blocks.put(material, giveMaterial);
